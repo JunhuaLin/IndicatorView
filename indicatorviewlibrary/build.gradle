@@ -1,4 +1,5 @@
 apply plugin: 'com.android.library'
+apply plugin: 'com.novoda.bintray-release'//添加
 
 android {
     compileSdkVersion 24
@@ -16,6 +17,18 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+}
+//添加
+publish {
+    userOrg = 'jun-hua'
+    groupId = 'com.linjunhua'
+    artifactId = 'IndicatorView'
+    publishVersion = '1.0.0'
+    desc = 'Oh hi, this is a nice description for a project, right?'
+    website = 'https://github.com/Jun-hua/IndicatorView'
+
+    bintrayUser = 'jun-hua'
+    bintrayKey = '76b9f60060fb621205f60e3704c01ec2d54d9568'
 }
 
 dependencies {
