@@ -1,12 +1,12 @@
 apply plugin: 'com.android.library'
 
 ext {
-    bintrayRepo = 'maven' //bintrayRepo使用默认的，即maven
-    bintrayName = 'indicatorview' //bintrayName修改成你上面创建的 package name
+    bintrayRepo = 'maven'
+    bintrayName = 'indicatorviewlibrary'
 
     publishedGroupId = 'cn.junhua.android.view'
-    libraryName = 'IndicatorViewLibrary'
-    artifact = 'indicatorview'
+    libraryName = 'IndicatorView'
+    artifact = 'indicatorviewlibrary'
 
     libraryDescription = 'a indicator for ViewPager on Android'
 
@@ -54,6 +54,7 @@ dependencies {
     testCompile 'junit:junit:4.12'
 }
 
-apply from: 'android_maven_config.gradle'
-apply from: 'bintray_config.gradle'
+apply from: 'https://raw.githubusercontent.com/nuuneoi/JCenter/master/installv1.gradle'
+apply from: 'https://raw.githubusercontent.com/nuuneoi/JCenter/master/bintrayv1.gradle'
+
 

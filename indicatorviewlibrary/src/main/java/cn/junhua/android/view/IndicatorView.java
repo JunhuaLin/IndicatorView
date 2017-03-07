@@ -15,7 +15,6 @@ import android.view.View;
 
 /**
  * @author 林军华
- *         <p/>
  *         2016年6月3日下午3:31:24
  */
 public class IndicatorView extends View {
