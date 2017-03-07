@@ -1,5 +1,29 @@
 apply plugin: 'com.android.library'
 
+ext {
+    bintrayRepo = 'maven' //bintrayRepo使用默认的，即maven
+    bintrayName = 'indicatorview' //bintrayName修改成你上面创建的 package name
+
+    publishedGroupId = 'cn.junhua.android.view'
+    libraryName = 'IndicatorViewLibrary'
+    artifact = 'indicatorview'
+
+    libraryDescription = 'a indicator for ViewPager on Android'
+
+    siteUrl = 'https://github.com/JunhuaLin/IndicatorView'
+    gitUrl = 'https://github.com/JunhuaLin/IndicatorView.git'
+
+    libraryVersion = '1.0.0'
+
+    developerId = 'linjunhua'
+    developerName = 'linjunhua'
+    developerEmail = 'linjunhua92@gmail.com'
+
+    licenseName = 'The Apache Software License, Version 2.0'
+    licenseUrl = 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+    allLicenses = ["Apache-2.0"]
+}
+
 android {
     compileSdkVersion 25
     buildToolsVersion "25.0.2"
@@ -29,3 +53,7 @@ dependencies {
     compile 'com.android.support:appcompat-v7:25.2.0'
     testCompile 'junit:junit:4.12'
 }
+
+apply from: 'android_maven_config.gradle'
+apply from: 'bintray_config.gradle'
+
