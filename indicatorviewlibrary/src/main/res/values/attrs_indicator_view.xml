@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <declare-styleable name="IndicatorView">
+
+        <!-- 设置指示器显示的总个数 -->
+        <attr name="indicator_count" format="integer" />
+        <!-- 指示器绘图的默认颜色 -->
+        <attr name="indicator_color" format="reference|color" />
+        <!-- 指示器绘图的select形式，会覆盖indicator_color设置的值-->
+        <attr name="indicator_drawable" format="reference" />
+        <!-- 指示器绘图的半径 -->
+        <attr name="indicator_radius" format="reference|dimension" />
+        <!-- 指示器绘图的选中时放缩比例 -->
+        <attr name="indicator_select_scale" format="float" />
+        <!-- 指示器默认选中的单元 -->
+        <attr name="indicator_select" format="integer" />
+    </declare-styleable>
+
+</resources>
