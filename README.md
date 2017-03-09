@@ -7,6 +7,11 @@ IndicatorView主要使用场景如下：
 - 引导页页码指示
 - 轮播图页码指示
 
+IndicatorView的优点:
+
+- 很轻量级：继承自View
+- 样式定制性高：通过StateListDrawable（即XML）配置选择图形
+
 
 
 ## 快速使用
@@ -141,6 +146,11 @@ viewpager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
 ### 5.结语
 
 欢迎Pull Requests 和 Issues。
+
+下步更新计划：
+1. 增加动画效果
+2. 在同一个指示器中支持同时显示不同StateListDrawable
+3. 存储当前状态
 
 
 
