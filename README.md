@@ -138,4 +138,9 @@ viewpager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
 ![IndicatorView1](https://github.com/JunhuaLin/IndicatorView/blob/master/photo/indicatorview2.png)
 
 
+### 5.结语
+
+欢迎Pull Requests 和 Issues。
+
+
 
