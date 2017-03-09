@@ -133,7 +133,7 @@ viewpager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
 
 ### 4.效果集合
 
-不同到选择效果都可以通过不同到选择器得到。
+不同的选择效果都可以通过不同的选择器得到。
 
 ![IndicatorView1](https://github.com/JunhuaLin/IndicatorView/blob/master/photo/indicatorview2.png)
 
