@@ -140,7 +140,7 @@ viewpager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
 
 不同的选择效果都可以通过不同的选择器得到。
 
-![IndicatorView1](https://github.com/JunhuaLin/IndicatorView/blob/master/photo/indicatorview2.png)
+![IndicatorView1](https://github.com/JunhuaLin/IndicatorView/blob/master/photo/indicatorview3.png)
 
 
 ### 5.结语

@@ -15,7 +15,7 @@ import cn.junhua.android.view.IndicatorView;
 public class MainActivity extends AppCompatActivity {
 
     private ViewPager viewpager;
-    private IndicatorView indicator_view, indicator_view1, indicator_view2, indicator_view3;
+    private IndicatorView indicator_view, indicator_view1, indicator_view2, indicator_view3, indicator_view4;
     private List<Integer> resList;
     private MyViewPagerAdapter myViewPagerAdapter;
 
@@ -30,6 +30,7 @@ public class MainActivity extends AppCompatActivity {
         indicator_view1 = (IndicatorView) findViewById(R.id.indicator_view1);
         indicator_view2 = (IndicatorView) findViewById(R.id.indicator_view2);
         indicator_view3 = (IndicatorView) findViewById(R.id.indicator_view3);
+        indicator_view4 = (IndicatorView) findViewById(R.id.indicator_view4);
 
         resList = new ArrayList<>();
         resList.add(R.mipmap.images1);
@@ -56,6 +57,7 @@ public class MainActivity extends AppCompatActivity {
         indicator_view1.setCount(resList.size());
         indicator_view2.setCount(resList.size());
         indicator_view3.setCount(resList.size());
+        indicator_view4.setCount(resList.size());
 
         viewpager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
@@ -69,6 +71,7 @@ public class MainActivity extends AppCompatActivity {
                 indicator_view1.setSelect(position);
                 indicator_view2.setSelect(position);
                 indicator_view3.setSelect(position);
+                indicator_view4.setSelect(position);
             }
 
             @Override

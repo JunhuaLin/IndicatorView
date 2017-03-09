@@ -53,6 +53,15 @@
             app:indicator_count="9"
             app:indicator_drawable="@drawable/indicator_unit_select3"
             app:indicator_select="0" />
+
+        <cn.junhua.android.view.IndicatorView
+            android:id="@+id/indicator_view4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            app:indicator_count="9"
+            app:indicator_drawable="@drawable/indicator_unit_select4"
+            app:indicator_select="0" />
     </LinearLayout>
 
 </RelativeLayout>
