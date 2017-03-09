@@ -1,5 +1,6 @@
 # IndicatorView
 这是一个非常简单的ViewPager页码指示器，它到实现只有一个继承View到自定义View。IndicatorView主要使用场景如下：
+
 1. 引导页页码指示
 2. 轮播图页码指示
 
