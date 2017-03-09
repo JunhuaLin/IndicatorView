@@ -30,5 +30,5 @@ dependencies {
 
 这是最简单到使用方法，默认样式如下图：
 
-![indicatorview_default](https://github.com/JunhuaLin/IndicatorView/tree/master/photo/indicatorview_default.png)
+![IndicatorView default](https://github.com/JunhuaLin/IndicatorView/tree/master/photo/indicatorview_default.png)
 
