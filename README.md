@@ -34,9 +34,7 @@ dependencies {
 
 这是最简单的使用方法，默认样式如下图：
 
-![IndicatorView default](https://github.com/JunhuaLin/IndicatorView/tree/master/photo/indicatorview_default.png)
-
-![Logo](https://github.com/LitePalFramework/LitePal/blob/master/sample/src/main/logo/mini_logo.png)
+![IndicatorView default](https://github.com/JunhuaLin/IndicatorView/blob/master/photo/indicatorview_default.png)
 
 IndicatorView支持到自定义属性如下：
 
@@ -98,4 +96,5 @@ indicator_unit_select1.xml
 
 运行效果如下：
 
-![IndicatorView1](https://github.com/JunhuaLin/IndicatorView/tree/master/photo/indicatorview1.png)
+![IndicatorView1](https://github.com/JunhuaLin/IndicatorView/blob/master/photo/indicatorview1.png)
+
