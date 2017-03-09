@@ -61,7 +61,7 @@ IndicatorView支持的自定义属性如下：
     </declare-styleable>
 ```
 
-例如indicator_drawable属性支持StateListDrawable类型选择器，IndicatorView会根据不同的条件展示不同到图形。
+例如indicator_drawable属性支持StateListDrawable类型选择器，IndicatorView会根据不同的条件展示不同的图形。
 支持如下几对的触发条件：
 * state_selected
 * state_pressed
@@ -148,6 +148,7 @@ viewpager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
 欢迎Pull Requests 和 Issues。
 
 下步更新计划：
+
 1. 增加动画效果
 2. 在同一个指示器中支持同时显示不同StateListDrawable
 3. 存储当前状态
