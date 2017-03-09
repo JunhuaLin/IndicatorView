@@ -4,8 +4,8 @@
 
 IndicatorView主要使用场景如下：
 
-1. 引导页页码指示
-2. 轮播图页码指示
+- 引导页页码指示
+- 轮播图页码指示
 
 
 
@@ -101,14 +101,14 @@ indicator_unit_select1.xml
 
 ### 3.在代码中关联IndicatorView
 
-1.初始化
+a.初始化
 ```java
 IndicatorView indicator_view = (IndicatorView) findViewById(R.id.indicator_view);
 indicator_view.setCount(resList.size());
 ...
 ```
 
-2.关联ViewPager
+b.关联ViewPager
 
 ```java
 ...
