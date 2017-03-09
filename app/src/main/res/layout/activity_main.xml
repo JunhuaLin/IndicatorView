@@ -15,7 +15,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginBottom="20dp"
+        android:layout_marginBottom="30dp"
         android:orientation="vertical">
 
 
@@ -29,27 +29,33 @@
 
         <cn.junhua.android.view.IndicatorView
             android:id="@+id/indicator_view1"
+
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
+            android:visibility="gone"
             app:indicator_count="9"
             app:indicator_drawable="@drawable/indicator_unit_select1"
             app:indicator_select="0" />
 
         <cn.junhua.android.view.IndicatorView
             android:id="@+id/indicator_view2"
+
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
+            android:visibility="gone"
             app:indicator_count="9"
             app:indicator_drawable="@drawable/indicator_unit_select2"
             app:indicator_select="0" />
 
         <cn.junhua.android.view.IndicatorView
             android:id="@+id/indicator_view3"
+
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
+            android:visibility="gone"
             app:indicator_count="9"
             app:indicator_drawable="@drawable/indicator_unit_select3"
             app:indicator_select="0" />
