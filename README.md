@@ -36,7 +36,7 @@ dependencies {
 
 ![IndicatorView default](https://github.com/JunhuaLin/IndicatorView/blob/master/photo/indicatorview_default.png)
 
-IndicatorView支持到自定义属性如下：
+IndicatorView支持的自定义属性如下：
 
 ```xml
 <declare-styleable name="IndicatorView">
@@ -97,4 +97,45 @@ indicator_unit_select1.xml
 运行效果如下：
 
 ![IndicatorView1](https://github.com/JunhuaLin/IndicatorView/blob/master/photo/indicatorview1.png)
+
+
+### 3.在代码中关联IndicatorView
+
+1.初始化
+```java
+IndicatorView indicator_view = (IndicatorView) findViewById(R.id.indicator_view);
+indicator_view.setCount(resList.size());
+...
+```
+
+2.关联ViewPager
+
+```java
+...
+viewpager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+                indicator_view.setSelect(position);
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+
+            }
+        });
+    ...
+```
+
+### 4.效果集合
+
+不同到选择效果都可以通过不同到选择器得到。
+
+![IndicatorView1](https://github.com/JunhuaLin/IndicatorView/blob/master/photo/indicatorview2.png)
+
+
 
