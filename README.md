@@ -1,6 +1,6 @@
 # IndicatorView
 以前在项目中使用线性布局实现该效果，感觉操作很繁琐而且很不利于复用，于是封装了一个简单的指示器类。
-这是一个非常简单的ViewPager页码指示器，它到实现只有一个继承View到自定义View。
+这是一个非常简单的ViewPager页码指示器，实现方式只有一个继承View到自定义View。
 
 IndicatorView主要使用场景如下：
 
