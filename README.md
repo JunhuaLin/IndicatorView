@@ -58,6 +58,12 @@ IndicatorView支持的自定义属性如下：
         <attr name="indicator_select_scale" format="float" />
         <!-- 指示器默认选中的单元 -->
         <attr name="indicator_select" format="integer" />
+
+        <!-- 指示器单元的宽高 优先级高于绘图的半径-->
+        <attr name="indicator_unit_width" format="reference|dimension" />
+        <attr name="indicator_unit_height" format="reference|dimension" />
+        <!-- 指示器单元之间的间距 -->
+        <attr name="indicator_padding" format="reference|dimension" />
     </declare-styleable>
 ```
 
