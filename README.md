@@ -10,7 +10,7 @@ IndicatorView主要使用场景如下：
 IndicatorView的优点:
 
 - 很轻量级：继承自View
-- 样式定制性高：通过StateListDrawable（即XML）配置选择图形
+- 样式定制性高：通过StateListDrawable（即XML）配置选择图形，支持使用图片的默认宽高
 
 
 
