@@ -15,7 +15,7 @@ import android.view.View;
 
 /**
  * @author 林军华
- *         2016年6月3日下午3:31:24
+ * 2016年6月3日下午3:31:24
  */
 public class IndicatorView extends View {
 
@@ -25,6 +25,11 @@ public class IndicatorView extends View {
     private final static int[][] STATE_LIST = {
             {-android.R.attr.state_selected, -android.R.attr.state_pressed, -android.R.attr.state_checked, -android.R.attr.state_enabled},
             {android.R.attr.state_selected, android.R.attr.state_pressed, android.R.attr.state_checked, android.R.attr.state_enabled}};
+
+
+    private final static int DEFAULT_PADDING_TOP_BO = 10;
+
+    private final int defaultWidthHeight;
 
     /**
      * 画笔设置抗锯齿
@@ -58,6 +63,9 @@ public class IndicatorView extends View {
      * 绘图单元的半径
      */
     private float mRadius;
+    private float mUnitWidth;
+    private float mUnitHeight;
+    private float mUnitPadding;
     /**
      * 画笔宽度
      */
@@ -73,10 +81,15 @@ public class IndicatorView extends View {
 
     public IndicatorView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
+        defaultWidthHeight = dip2px(context, 10);
+
         TypedArray ta = context.obtainStyledAttributes(attrs, R.styleable.IndicatorView);
         mCount = ta.getInt(R.styleable.IndicatorView_indicator_count, 3);
         mColor = ta.getColor(R.styleable.IndicatorView_indicator_color, Color.RED);
-        mRadius = ta.getDimension(R.styleable.IndicatorView_indicator_radius, 10);
+        mRadius = ta.getDimension(R.styleable.IndicatorView_indicator_radius, -1);
+        mUnitWidth = ta.getDimension(R.styleable.IndicatorView_indicator_unit_width, -1);
+        mUnitHeight = ta.getDimension(R.styleable.IndicatorView_indicator_unit_height, -1);
+        mUnitPadding = ta.getDimension(R.styleable.IndicatorView_indicator_padding, dip2px(context, 5));
         Drawable tempDrawable = ta.getDrawable(R.styleable.IndicatorView_indicator_drawable);
         mSelectScale = ta.getFloat(R.styleable.IndicatorView_indicator_select_scale, 1.0f);
         mSelect = ta.getInt(R.styleable.IndicatorView_indicator_select, 0);
@@ -85,6 +98,8 @@ public class IndicatorView extends View {
         if (tempDrawable instanceof StateListDrawable) {
             mUnitDrawable = (StateListDrawable) tempDrawable;
         }
+
+
         setSelect(mSelect);
         mPaint.setColor(mColor);
         mPaint.setAntiAlias(true);
@@ -95,6 +110,8 @@ public class IndicatorView extends View {
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
 
+        handleUnitSize();
+
         // 得到模式和对应值
         int withMode = MeasureSpec.getMode(widthMeasureSpec);
         int withSize = MeasureSpec.getSize(widthMeasureSpec);
@@ -102,8 +119,8 @@ public class IndicatorView extends View {
         int heightSize = MeasureSpec.getSize(heightMeasureSpec);
 
         // 设置默认宽高
-        int width = (int) ((mStrokeWidth + mRadius + mRadius) * 2 * mCount + getPaddingLeft() + getPaddingRight());
-        int height = (int) ((mStrokeWidth + mRadius + mRadius) * 2 + getPaddingTop() + getPaddingBottom());
+        int width = (int) ((mBounds.width() + mUnitPadding * 2) * mCount + getPaddingLeft() + getPaddingRight());
+        int height = mBounds.height() + DEFAULT_PADDING_TOP_BO * 2 + getPaddingTop() + getPaddingBottom();
 
         int w, h;
         if (withMode == MeasureSpec.AT_MOST || withMode == MeasureSpec.UNSPECIFIED) {
@@ -118,36 +135,86 @@ public class IndicatorView extends View {
         }
 
         setMeasuredDimension(w, h);
-
     }
 
-    @Override
-    protected void onSizeChanged(int w, int h, int oldw, int oldh) {
-        super.onSizeChanged(w, h, oldw, oldh);
+    /**
+     * 处理尺寸
+     */
+    private void handleUnitSize() {
+        int width, height;
+        height = (int) mUnitHeight;
+        width = (int) mUnitWidth;
 
-        mBounds = new Rect(0, 0, (int) (mRadius * 2), (int) (mRadius * 2));
+        if (height < 0 && width < 0) {
+            height = (int) (mRadius * 2);
+            width = (int) (mRadius * 2);
+        }
+
+        if (mUnitDrawable != null && height < 0 && width < 0) {
+            height = mUnitDrawable.getIntrinsicHeight();
+            width = mUnitDrawable.getIntrinsicWidth();
+        }
+        //默认宽高
+        if (height < 0 && width < 0) {
+            height = defaultWidthHeight;
+            width = defaultWidthHeight;
+        }
+
+        mBounds = new Rect(0, 0, width, height);
         if (mUnitDrawable != null) {
             mUnitDrawable.setBounds(mBounds);
         }
-
         // 设置画笔
-        mStrokeWidth = mRadius / 10;
+        mStrokeWidth = Math.min(mBounds.width(), mBounds.height()) / 20;
         mPaint.setStrokeWidth(mStrokeWidth);
     }
 
 
     @Override
     protected void onDraw(Canvas canvas) {
+        canvas.save();
+        //处理view的padding
+        canvas.translate(getPaddingLeft(), getPaddingTop());
         for (int i = 0; i < mCount; i++) {
             canvas.save();
-            canvas.translate(mRadius * i * 4 + getPaddingLeft(), getPaddingTop());
-
+            //此处忽略画笔的宽度 移动绘制单元格 并居中
+            canvas.translate((mUnitPadding * 2 + mBounds.width()) * i + mUnitPadding, DEFAULT_PADDING_TOP_BO);
             if (mUnitDrawable != null) {
                 drawDrawableUnit(canvas, i == mSelect);
             } else {
                 drawDefaultUnit(canvas, i == mSelect);
             }
             canvas.restore();
+        }
+        canvas.restore();
+    }
+
+    /**
+     * 此时居中
+     * 用来绘制特定Drawable指示器单元显示
+     */
+    private void drawDrawableUnit(Canvas canvas, boolean isSelect) {
+        if (isSelect) {
+            mUnitDrawable.setState(STATE_LIST[1]);
+            canvas.scale(mSelectScale, mSelectScale, mBounds.centerX(), mBounds.centerY());
+        } else {
+            mUnitDrawable.setState(STATE_LIST[0]);
+        }
+        mUnitDrawable.draw(canvas);
+    }
+
+    /**
+     * 此时居中
+     * 用来绘制默认指示器单元显示
+     */
+    private void drawDefaultUnit(Canvas canvas, boolean isSelect) {
+        float drawRadius = (Math.min(mBounds.width(), mBounds.height()) - mStrokeWidth) / 2;
+        if (isSelect) {
+            mPaint.setStyle(Paint.Style.FILL_AND_STROKE);
+            canvas.drawCircle(mBounds.centerX(), mBounds.centerY(), drawRadius * mSelectScale, mPaint);
+        } else {
+            mPaint.setStyle(Paint.Style.STROKE);
+            canvas.drawCircle(mBounds.centerX(), mBounds.centerY(), drawRadius, mPaint);
         }
     }
 
@@ -159,36 +226,6 @@ public class IndicatorView extends View {
         this.mColor = color;
         mPaint.setColor(mColor);
         invalidate();
-    }
-
-    /**
-     * 用来绘制特定Drawable指示器单元显示
-     */
-    private void drawDrawableUnit(Canvas canvas, boolean isSelect) {
-        canvas.save();
-        // 居中
-        canvas.translate((getHeight() - mBounds.height()) / 2, (getHeight() - mBounds.height()) / 2);
-        if (isSelect) {
-            mUnitDrawable.setState(STATE_LIST[1]);
-            canvas.scale(mSelectScale, mSelectScale, mBounds.centerX(), mBounds.centerY());
-        } else {
-            mUnitDrawable.setState(STATE_LIST[0]);
-        }
-        mUnitDrawable.draw(canvas);
-        canvas.restore();
-    }
-
-    /**
-     * 用来绘制默认指示器单元显示
-     */
-    private void drawDefaultUnit(Canvas canvas, boolean isSelect) {
-        if (isSelect) {
-            mPaint.setStyle(Paint.Style.FILL_AND_STROKE);
-            canvas.drawCircle(mBounds.width(), mBounds.height(), mRadius * mSelectScale, mPaint);
-        } else {
-            mPaint.setStyle(Paint.Style.STROKE);
-            canvas.drawCircle(mBounds.width(), mBounds.height(), mRadius, mPaint);
-        }
     }
 
     public int getCount() {
@@ -210,10 +247,10 @@ public class IndicatorView extends View {
     /**
      * 设置选中的unit的index
      *
-     * @param select
+     * @param select 选中的位置
      */
     public void setSelect(int select) {
-        this.mSelect = (select % mCount + mCount) % mCount;
+        this.mSelect = select;
         invalidate();
     }
 
@@ -227,10 +264,6 @@ public class IndicatorView extends View {
             mUnitDrawable.setBounds(mBounds);
             invalidate();
         }
-    }
-
-    public float getRadius() {
-        return mRadius;
     }
 
     public void setRadius(float radius) {
@@ -269,6 +302,11 @@ public class IndicatorView extends View {
     public void previous() {
         mSelect = (mSelect - 1 + mCount) % mCount;
         invalidate();
+    }
+
+    public static int dip2px(Context context, float dpValue) {
+        final float scale = context.getResources().getDisplayMetrics().density;
+        return (int) (dpValue * scale + 0.5f);
     }
 
 }
