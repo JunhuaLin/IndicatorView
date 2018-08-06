@@ -3,6 +3,7 @@ package com.ljh.indicatorview;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.widget.ImageView;
 
 import com.ljh.indicatorview.adapter.MyViewPagerAdapter;
@@ -14,6 +15,7 @@ import cn.junhua.android.view.IndicatorView;
 
 public class MainActivity extends AppCompatActivity {
 
+    private static final String TAG = "MainActivity";
     private ViewPager viewpager;
     private IndicatorView indicator_view, indicator_view1, indicator_view2, indicator_view3, indicator_view4, indicator_view5;
     private List<Integer> resList;
@@ -25,13 +27,13 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        viewpager = (ViewPager) findViewById(R.id.viewpager);
-        indicator_view = (IndicatorView) findViewById(R.id.indicator_view);
-        indicator_view1 = (IndicatorView) findViewById(R.id.indicator_view1);
-        indicator_view2 = (IndicatorView) findViewById(R.id.indicator_view2);
-        indicator_view3 = (IndicatorView) findViewById(R.id.indicator_view3);
-        indicator_view4 = (IndicatorView) findViewById(R.id.indicator_view4);
-        indicator_view5 = (IndicatorView) findViewById(R.id.indicator_view5);
+        viewpager = findViewById(R.id.viewpager);
+        indicator_view = findViewById(R.id.indicator_view);
+        indicator_view1 = findViewById(R.id.indicator_view1);
+        indicator_view2 = findViewById(R.id.indicator_view2);
+        indicator_view3 = findViewById(R.id.indicator_view3);
+        indicator_view4 = findViewById(R.id.indicator_view4);
+        indicator_view5 = findViewById(R.id.indicator_view5);
 
         resList = new ArrayList<>();
         resList.add(R.mipmap.images1);
@@ -64,7 +66,7 @@ public class MainActivity extends AppCompatActivity {
         viewpager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-
+                Log.d(TAG, "onPageScrolled() called with: position = [" + position + "], positionOffset = [" + positionOffset + "], positionOffsetPixels = [" + positionOffsetPixels + "]");
             }
 
             @Override

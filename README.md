@@ -23,7 +23,7 @@ IndicatorView的优点:
 在build.gradle中添加如下代码：
 ```
 dependencies {
-     compile 'cn.junhua.android.view:indicatorviewlibrary:1.2.0'
+     compile 'cn.junhua.android.view:indicatorviewlibrary:1.1.0'
 }
 ```
 
