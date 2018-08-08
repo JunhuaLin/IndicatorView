@@ -2,7 +2,7 @@ apply plugin: 'com.android.application'
 
 android {
     compileSdkVersion 27
-    buildToolsVersion "24.0.2"
+    buildToolsVersion '27.0.3'
 
     defaultConfig {
         applicationId "com.ljh.indicatorview"
@@ -20,9 +20,9 @@ android {
 }
 
 dependencies {
-    compile fileTree(include: ['*.jar'], dir: 'libs')
-    testCompile 'junit:junit:4.12'
-    compile 'com.android.support:appcompat-v7:27.1.1'
-    compile project(':indicatorviewlibrary')
-//    compile 'cn.junhua.android.view:indicatorviewlibrary:1.1.0'
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
+    testImplementation 'junit:junit:4.12'
+    implementation 'com.android.support:appcompat-v7:27.1.1'
+    implementation project(':indicatorviewlibrary')
+//    implementation 'cn.junhua.android.view:indicatorviewlibrary:1.1.0'
 }
