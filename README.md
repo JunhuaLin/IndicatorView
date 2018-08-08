@@ -11,6 +11,7 @@ IndicatorView的优点:
 
 - 很轻量级：继承自View
 - 样式定制性高：通过StateListDrawable（即XML）配置选择图形，支持使用图片的默认宽高
+- 自定义动画：通过实现IndicatorTransformer接口实现切换动画，内置平移动画TranslationIndicatorTransformer
 
 
 
@@ -105,13 +106,9 @@ indicator_unit_select1.xml
             app:indicator_select="0" />
 ```
 
-运行效果如下：
+### 3.关联IndicatorView
 
-![IndicatorView1](https://github.com/JunhuaLin/IndicatorView/blob/master/photo/indicatorview1.png)
-
-
-### 3.在代码中关联IndicatorView
-
+关联操作：
 ```java
 IndicatorView indicator_view = (IndicatorView) findViewById(R.id.indicator_view);
 indicator_view.setCount(resList.size());
@@ -121,11 +118,30 @@ indicator_view.setupWithViewPager(viewpager);
 indicator_view.setSelect(int pos);
 ```
 
+使用动画：
+```java
+private class ScaleIndicatorTransformer extends IndicatorView.TranslationIndicatorTransformer {
+        @Override
+        public void transformPage(IndicatorView page, Canvas canvas, int position, float positionOffset) {
+            super.transformPage(page, canvas, position, positionOffset);
+            Log.d(TAG, "transformPage() called with: position = [" + position + "], positionOffset = [" + positionOffset + "]");
+            Rect bounds = page.getUnitBounds();
+            float pos = Math.abs(positionOffset - 0.5f) * 2;
+            pos = pos < 0.4f ? 0.4f : pos;
+            canvas.scale(pos, pos, bounds.centerX(), bounds.centerY());
+        }
+    }
+
+indicator_view.setIndicatorTransformer(new ScaleIndicatorTransformer());
+//或者使用内置平移动画
+indicator_view.setIndicatorTransformer(new IndicatorView.TranslationIndicatorTransformer());
+```
+
 ### 4.效果集合
 
 不同的选择效果都可以通过不同的选择器得到。
 
-![IndicatorView1](https://github.com/JunhuaLin/IndicatorView/blob/master/photo/indicatorview3.png)
+![IndicatorView1](https://github.com/JunhuaLin/IndicatorView/blob/master/photo/video.gif)
 
 
 ### 5.结语
@@ -133,10 +149,7 @@ indicator_view.setSelect(int pos);
 欢迎Pull Requests 和 Issues。
 
 下步更新计划：
-
-1. 增加动画效果
-2. 在同一个指示器中支持同时显示不同StateListDrawable
-3. 存储当前状态
+1. 在同一个指示器中支持同时显示不同StateListDrawable
 
 
 
