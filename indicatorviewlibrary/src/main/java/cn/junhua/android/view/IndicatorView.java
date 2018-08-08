@@ -392,7 +392,7 @@ public class IndicatorView extends View {
     /**
      * 平移动画
      */
-    public static class SimpleIndicatorTransformer implements IndicatorTransformer {
+    public static class TranslationIndicatorTransformer implements IndicatorTransformer {
 
         @Override
         public void transformPage(IndicatorView page, Canvas canvas, int position, float positionOffset) {

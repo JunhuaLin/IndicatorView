@@ -69,14 +69,15 @@ public class MainActivity extends AppCompatActivity {
 
         indicator_view.setIndicatorTransformer(new ScaleIndicatorTransformer());
         indicator_view4.setIndicatorTransformer(new ScaleIndicatorTransformer());
-        indicator_view5.setIndicatorTransformer(new IndicatorView.SimpleIndicatorTransformer());
+        indicator_view5.setIndicatorTransformer(new IndicatorView.TranslationIndicatorTransformer());
     }
 
 
-    private class ScaleIndicatorTransformer extends IndicatorView.SimpleIndicatorTransformer {
+    private class ScaleIndicatorTransformer extends IndicatorView.TranslationIndicatorTransformer {
         @Override
         public void transformPage(IndicatorView page, Canvas canvas, int position, float positionOffset) {
             super.transformPage(page, canvas, position, positionOffset);
+            Log.d(TAG, "transformPage() called with: position = [" + position + "], positionOffset = [" + positionOffset + "]");
             Rect bounds = page.getUnitBounds();
             float pos = Math.abs(positionOffset - 0.5f) * 2;
             pos = pos < 0.4f ? 0.4f : pos;

@@ -23,7 +23,7 @@ IndicatorView的优点:
 在build.gradle中添加如下代码：
 ```
 dependencies {
-     compile 'cn.junhua.android.view:indicatorviewlibrary:1.1.0'
+     compile 'cn.junhua.android.view:indicatorviewlibrary:1.2.0'
 }
 ```
 
@@ -112,34 +112,13 @@ indicator_unit_select1.xml
 
 ### 3.在代码中关联IndicatorView
 
-a.初始化
 ```java
 IndicatorView indicator_view = (IndicatorView) findViewById(R.id.indicator_view);
 indicator_view.setCount(resList.size());
-...
-```
-
-b.关联ViewPager
-
-```java
-...
-viewpager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
-            @Override
-            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-
-            }
-
-            @Override
-            public void onPageSelected(int position) {
-                indicator_view.setSelect(position);
-            }
-
-            @Override
-            public void onPageScrollStateChanged(int state) {
-
-            }
-        });
-    ...
+//关联ViewPager
+indicator_view.setupWithViewPager(viewpager);
+//或者使用
+indicator_view.setSelect(int pos);
 ```
 
 ### 4.效果集合
