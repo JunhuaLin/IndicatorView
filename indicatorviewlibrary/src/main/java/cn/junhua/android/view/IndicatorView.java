@@ -11,6 +11,7 @@ import android.graphics.drawable.Drawable;
 import android.graphics.drawable.StateListDrawable;
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.support.v4.view.ViewPager;
 import android.util.AttributeSet;
 import android.view.View;
 
@@ -28,10 +29,21 @@ public class IndicatorView extends View {
             {-android.R.attr.state_selected, -android.R.attr.state_pressed, -android.R.attr.state_checked, -android.R.attr.state_enabled},
             {android.R.attr.state_selected, android.R.attr.state_pressed, android.R.attr.state_checked, android.R.attr.state_enabled}};
 
+    /**
+     * 动画接口
+     */
+    public interface IndicatorTransformer {
+        void transformPage(IndicatorView page, Canvas canvas, int position, float positionOffset);
+    }
 
     private final static int DEFAULT_PADDING_TOP_BO = 10;
 
     private final int defaultWidthHeight;
+
+    private IndicatorViewOnPageChangeListener mIndicatorViewOnPageChangeListener;
+    private IndicatorTransformer mIndicatorTransformer;
+    private float mPositionOffset;
+    private boolean isAnimation = false;
 
     /**
      * 画笔设置抗锯齿
@@ -178,17 +190,47 @@ public class IndicatorView extends View {
         //处理view的padding
         canvas.translate(getPaddingLeft(), getPaddingTop());
         for (int i = 0; i < mCount; i++) {
-            canvas.save();
             //此处忽略画笔的宽度 移动绘制单元格 并居中
+            canvas.save();
             canvas.translate((mUnitPadding * 2 + mBounds.width()) * i + mUnitPadding, DEFAULT_PADDING_TOP_BO);
             if (mUnitDrawable != null) {
-                drawDrawableUnit(canvas, i == mSelect);
+                drawDrawableUnit(canvas, !isAnimation && mSelect == i);
             } else {
-                drawDefaultUnit(canvas, i == mSelect);
+                drawDefaultUnit(canvas, !isAnimation && mSelect == i);
             }
             canvas.restore();
         }
+
+        drawAnimationUnit(canvas);
         canvas.restore();
+    }
+
+    /**
+     * 处理动画
+     *
+     * @param canvas Canvas
+     */
+    private void drawAnimationUnit(Canvas canvas) {
+        if (!isAnimation) return;
+
+        if (mSelect >= 0 && mSelect < mCount) {
+            canvas.save();
+
+            float unitWidth = mUnitPadding * 2 + mBounds.width();
+            canvas.translate(unitWidth * mSelect + mUnitPadding, DEFAULT_PADDING_TOP_BO);
+
+            //处理动画
+            if (mIndicatorTransformer != null) {
+                mIndicatorTransformer.transformPage(this, canvas, mSelect, mPositionOffset);
+            }
+
+            if (mUnitDrawable != null) {
+                drawDrawableUnit(canvas, true);
+            } else {
+                drawDefaultUnit(canvas, true);
+            }
+            canvas.restore();
+        }
     }
 
     /**
@@ -220,6 +262,33 @@ public class IndicatorView extends View {
         }
     }
 
+
+    public void setupWithViewPager(ViewPager viewPager) {
+        if (mIndicatorViewOnPageChangeListener == null) {
+            mIndicatorViewOnPageChangeListener = new IndicatorViewOnPageChangeListener();
+        }
+        viewPager.removeOnPageChangeListener(mIndicatorViewOnPageChangeListener);
+        viewPager.addOnPageChangeListener(mIndicatorViewOnPageChangeListener);
+    }
+
+    public void setIndicatorTransformer(IndicatorTransformer indicatorTransformer) {
+        isAnimation = indicatorTransformer != null;
+        mIndicatorTransformer = indicatorTransformer;
+    }
+
+    private class IndicatorViewOnPageChangeListener extends ViewPager.SimpleOnPageChangeListener {
+        @Override
+        public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+            if (isAnimation) {
+                mSelect = position;
+                mPositionOffset = positionOffset;
+            } else {
+                mSelect = Math.round(position + positionOffset);
+            }
+            invalidate();
+        }
+    }
+
     public int getColor() {
         return mColor;
     }
@@ -244,6 +313,14 @@ public class IndicatorView extends View {
 
     public int getSelect() {
         return mSelect;
+    }
+
+    public Rect getUnitBounds() {
+        return mBounds;
+    }
+
+    public float getUnitPadding() {
+        return mUnitPadding;
     }
 
     /**
@@ -309,6 +386,24 @@ public class IndicatorView extends View {
     public static int dip2px(Context context, float dpValue) {
         final float scale = context.getResources().getDisplayMetrics().density;
         return (int) (dpValue * scale + 0.5f);
+    }
+
+
+    /**
+     * 平移动画
+     */
+    public static class SimpleIndicatorTransformer implements IndicatorTransformer {
+
+        @Override
+        public void transformPage(IndicatorView page, Canvas canvas, int position, float positionOffset) {
+            float unitWidth = page.getUnitPadding() * 2 + page.getUnitBounds().width();
+            float scrollWidth = unitWidth;
+            if (position + 1 >= 0 && position + 1 < page.getCount()) {
+                scrollWidth += unitWidth;
+            }
+            scrollWidth *= positionOffset * 0.5f;
+            canvas.translate(scrollWidth, 0);
+        }
     }
 
     @Override

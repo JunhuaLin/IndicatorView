@@ -1,5 +1,7 @@
 package com.ljh.indicatorview;
 
+import android.graphics.Canvas;
+import android.graphics.Rect;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
@@ -16,10 +18,6 @@ import cn.junhua.android.view.IndicatorView;
 public class MainActivity extends AppCompatActivity {
 
     private static final String TAG = "MainActivity";
-    private ViewPager viewpager;
-    private IndicatorView indicator_view, indicator_view1, indicator_view2, indicator_view3, indicator_view4, indicator_view5;
-    private List<Integer> resList;
-    private MyViewPagerAdapter myViewPagerAdapter;
 
 
     @Override
@@ -27,15 +25,15 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        viewpager = findViewById(R.id.viewpager);
-        indicator_view = findViewById(R.id.indicator_view);
-        indicator_view1 = findViewById(R.id.indicator_view1);
-        indicator_view2 = findViewById(R.id.indicator_view2);
-        indicator_view3 = findViewById(R.id.indicator_view3);
-        indicator_view4 = findViewById(R.id.indicator_view4);
-        indicator_view5 = findViewById(R.id.indicator_view5);
+        ViewPager viewpager = findViewById(R.id.viewpager);
+        IndicatorView indicator_view = findViewById(R.id.indicator_view);
+        IndicatorView indicator_view1 = findViewById(R.id.indicator_view1);
+        IndicatorView indicator_view2 = findViewById(R.id.indicator_view2);
+        IndicatorView indicator_view3 = findViewById(R.id.indicator_view3);
+        IndicatorView indicator_view4 = findViewById(R.id.indicator_view4);
+        IndicatorView indicator_view5 = findViewById(R.id.indicator_view5);
 
-        resList = new ArrayList<>();
+        List<Integer> resList = new ArrayList<>();
         resList.add(R.mipmap.images1);
         resList.add(R.mipmap.images2);
         resList.add(R.mipmap.images3);
@@ -52,8 +50,7 @@ public class MainActivity extends AppCompatActivity {
             imageViewList.add(imageView);
         }
 
-
-        myViewPagerAdapter = new MyViewPagerAdapter(imageViewList);
+        MyViewPagerAdapter myViewPagerAdapter = new MyViewPagerAdapter(imageViewList);
         viewpager.setAdapter(myViewPagerAdapter);
 
         indicator_view.setCount(resList.size());
@@ -63,27 +60,28 @@ public class MainActivity extends AppCompatActivity {
         indicator_view4.setCount(resList.size());
         indicator_view5.setCount(resList.size());
 
-        viewpager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
-            @Override
-            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-                Log.d(TAG, "onPageScrolled() called with: position = [" + position + "], positionOffset = [" + positionOffset + "], positionOffsetPixels = [" + positionOffsetPixels + "]");
-            }
+        indicator_view.setupWithViewPager(viewpager);
+        indicator_view1.setupWithViewPager(viewpager);
+        indicator_view2.setupWithViewPager(viewpager);
+        indicator_view3.setupWithViewPager(viewpager);
+        indicator_view4.setupWithViewPager(viewpager);
+        indicator_view5.setupWithViewPager(viewpager);
 
-            @Override
-            public void onPageSelected(int position) {
-                indicator_view.setSelect(position);
-                indicator_view1.setSelect(position);
-                indicator_view2.setSelect(position);
-                indicator_view3.setSelect(position);
-                indicator_view4.setSelect(position);
-                indicator_view5.setSelect(position);
-            }
-
-            @Override
-            public void onPageScrollStateChanged(int state) {
-
-            }
-        });
-
+        indicator_view.setIndicatorTransformer(new ScaleIndicatorTransformer());
+        indicator_view4.setIndicatorTransformer(new ScaleIndicatorTransformer());
+        indicator_view5.setIndicatorTransformer(new IndicatorView.SimpleIndicatorTransformer());
     }
+
+
+    private class ScaleIndicatorTransformer extends IndicatorView.SimpleIndicatorTransformer {
+        @Override
+        public void transformPage(IndicatorView page, Canvas canvas, int position, float positionOffset) {
+            super.transformPage(page, canvas, position, positionOffset);
+            Rect bounds = page.getUnitBounds();
+            float pos = Math.abs(positionOffset - 0.5f) * 2;
+            pos = pos < 0.4f ? 0.4f : pos;
+            canvas.scale(pos, pos, bounds.centerX(), bounds.centerY());
+        }
+    }
+
 }
