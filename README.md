@@ -28,6 +28,13 @@ dependencies {
 }
 ```
 
+出现依赖冲突可以剔除内部依赖的v4包：
+```
+implementation ('cn.junhua.android.view:indicatorviewlibrary:1.2.0'){
+        exclude module: 'support-v4'
+}
+```
+
 
 ### 2.在布局文件引入IndicatorView
 
