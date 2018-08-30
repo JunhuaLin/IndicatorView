@@ -28,23 +28,12 @@ public class IndicatorView extends View {
     private final static int[][] STATE_LIST = {
             {-android.R.attr.state_selected, -android.R.attr.state_pressed, -android.R.attr.state_checked, -android.R.attr.state_enabled},
             {android.R.attr.state_selected, android.R.attr.state_pressed, android.R.attr.state_checked, android.R.attr.state_enabled}};
-
-    /**
-     * 动画接口
-     */
-    public interface IndicatorTransformer {
-        void transformPage(IndicatorView page, Canvas canvas, int position, float positionOffset);
-    }
-
     private final static int DEFAULT_PADDING_TOP_BO = 10;
-
     private final int defaultWidthHeight;
-
     private IndicatorViewOnPageChangeListener mIndicatorViewOnPageChangeListener;
     private IndicatorTransformer mIndicatorTransformer;
     private float mPositionOffset;
     private boolean isAnimation = false;
-
     /**
      * 画笔设置抗锯齿
      */
@@ -84,7 +73,6 @@ public class IndicatorView extends View {
      * 画笔宽度
      */
     private float mStrokeWidth;
-
     public IndicatorView(Context context, AttributeSet attrs) {
         this(context, attrs, 0);
     }
@@ -118,6 +106,11 @@ public class IndicatorView extends View {
         mPaint.setColor(mColor);
         mPaint.setAntiAlias(true);
         mPaint.setStyle(Paint.Style.STROKE);
+    }
+
+    public static int dip2px(Context context, float dpValue) {
+        final float scale = context.getResources().getDisplayMetrics().density;
+        return (int) (dpValue * scale + 0.5f);
     }
 
     @Override
@@ -276,19 +269,6 @@ public class IndicatorView extends View {
         mIndicatorTransformer = indicatorTransformer;
     }
 
-    private class IndicatorViewOnPageChangeListener extends ViewPager.SimpleOnPageChangeListener {
-        @Override
-        public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-            if (isAnimation) {
-                mSelect = position;
-                mPositionOffset = positionOffset;
-            } else {
-                mSelect = Math.round(position + positionOffset);
-            }
-            invalidate();
-        }
-    }
-
     public int getColor() {
         return mColor;
     }
@@ -315,14 +295,6 @@ public class IndicatorView extends View {
         return mSelect;
     }
 
-    public Rect getUnitBounds() {
-        return mBounds;
-    }
-
-    public float getUnitPadding() {
-        return mUnitPadding;
-    }
-
     /**
      * 设置选中的unit的index
      *
@@ -331,6 +303,14 @@ public class IndicatorView extends View {
     public void setSelect(int select) {
         this.mSelect = select;
         invalidate();
+    }
+
+    public Rect getUnitBounds() {
+        return mBounds;
+    }
+
+    public float getUnitPadding() {
+        return mUnitPadding;
     }
 
     public StateListDrawable getUnitDrawable() {
@@ -383,11 +363,30 @@ public class IndicatorView extends View {
         invalidate();
     }
 
-    public static int dip2px(Context context, float dpValue) {
-        final float scale = context.getResources().getDisplayMetrics().density;
-        return (int) (dpValue * scale + 0.5f);
+    @Override
+    protected Parcelable onSaveInstanceState() {
+        Parcelable parcelable = super.onSaveInstanceState();
+        SavedState ss = new SavedState(parcelable);
+        ss.count = mCount;
+        ss.select = mSelect;
+        return ss;
     }
 
+    @Override
+    protected void onRestoreInstanceState(Parcelable state) {
+        SavedState ss = (SavedState) state;
+        super.onRestoreInstanceState(ss.getSuperState());
+        setCount(ss.count);
+        setSelect(ss.select);
+    }
+
+
+    /**
+     * 动画接口
+     */
+    public interface IndicatorTransformer {
+        void transformPage(IndicatorView page, Canvas canvas, int position, float positionOffset);
+    }
 
     /**
      * 平移动画
@@ -406,29 +405,23 @@ public class IndicatorView extends View {
         }
     }
 
-    @Override
-    protected Parcelable onSaveInstanceState() {
-        Parcelable parcelable = super.onSaveInstanceState();
-        SavedState ss = new SavedState(parcelable);
-        ss.count = mCount;
-        ss.select = mSelect;
-        return ss;
-    }
-
-    @Override
-    protected void onRestoreInstanceState(Parcelable state) {
-        SavedState ss = (SavedState) state;
-        super.onRestoreInstanceState(ss.getSuperState());
-        setCount(ss.count);
-        setSelect(ss.select);
-    }
-
     /**
      * User interface state that is stored by IndicatorView for implementing
      * {@link View#onSaveInstanceState}.
      */
     public static class SavedState extends BaseSavedState {
 
+        @SuppressWarnings("hiding")
+        public static final Parcelable.Creator<SavedState> CREATOR
+                = new Parcelable.Creator<SavedState>() {
+            public SavedState createFromParcel(Parcel in) {
+                return new SavedState(in);
+            }
+
+            public SavedState[] newArray(int size) {
+                return new SavedState[size];
+            }
+        };
         int count;
         int select;
 
@@ -449,18 +442,24 @@ public class IndicatorView extends View {
             out.writeInt(select);
         }
 
-        @SuppressWarnings("hiding")
-        public static final Parcelable.Creator<SavedState> CREATOR
-                = new Parcelable.Creator<SavedState>() {
-            public SavedState createFromParcel(Parcel in) {
-                return new SavedState(in);
-            }
+    }
 
-            public SavedState[] newArray(int size) {
-                return new SavedState[size];
+    private class IndicatorViewOnPageChangeListener extends ViewPager.SimpleOnPageChangeListener {
+        @Override
+        public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+            if (isAnimation) {
+                mSelect = position;
+                mPositionOffset = positionOffset;
             }
-        };
+            invalidate();
+        }
 
+        @Override
+        public void onPageSelected(int position) {
+            if (!isAnimation) {
+                mSelect = position;
+            }
+        }
     }
 
 }
