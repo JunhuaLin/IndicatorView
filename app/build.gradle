@@ -10,6 +10,10 @@ android {
         targetSdkVersion rootProject.android.targetSdkVersion
         versionCode rootProject.android.versionCode
         versionName rootProject.android.versionName
+        //support
+        testInstrumentationRunner = 'android.support.test.runner.AndroidJUnitRunner'
+        //androidx
+//        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
         release {
@@ -22,7 +26,32 @@ android {
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
     testImplementation 'junit:junit:4.12'
-    implementation 'com.android.support:appcompat-v7:27.1.0'
+    implementation 'com.android.support:appcompat-v7:27.1.1'
     implementation project(':indicatorviewlibrary')
-//    implementation 'cn.junhua.android.view:indicatorviewlibrary:1.1.0'
+    //    implementation 'cn.junhua.android.view:indicatorviewlibrary:1.1.0'
+
+    //support
+    //必选
+    androidTestImplementation 'com.android.support.test:rules:1.0.2'
+    androidTestImplementation 'com.android.support.test:runner:1.0.2'
+    androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
+    //可选
+    androidTestImplementation 'com.android.support.test.espresso:espresso-web:3.0.2'
+//    androidTestImplementation 'com.android.support.test.espresso:espresso-idling-resource:3.0.2'
+//    androidTestImplementation 'com.android.support.test.espresso:espresso-contrib:3.0.2'
+//    androidTestImplementation 'com.android.support.test.espresso:espresso-intents:3.0.2'
+//    androidTestImplementation 'com.android.support.test.espresso:espresso-remote:3.0.2'
+
+//    //androidx
+//    //必选
+//    androidTestImplementation 'androidx.test:runner:1.2.0'
+//    androidTestImplementation 'androidx.test:rules:1.2.0'
+//    androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
+//    //可选
+//    androidTestImplementation 'androidx.test.espresso:espresso-web:3.2.0'
+//    androidTestImplementation 'androidx.test.espresso:espresso-idling-resource:3.2.0'
+//    androidTestImplementation 'androidx.test.espresso:espresso-contrib:3.2.0'
+//    androidTestImplementation 'androidx.test.espresso:espresso-intents:3.2.0'
+//    androidTestImplementation 'androidx.test.espresso:espresso-remote:3.2.0'
+
 }
